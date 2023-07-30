@@ -124,4 +124,38 @@ class InsuranceTypeController extends Controller
         
         
     }
+
+    public function getSingleInsurance($id){
+        if(InsuranceType::where("id", $id)->exists()){
+            $ins_details = InsuranceType::where("id", $id)->first();
+           
+            return response()->json([
+                "status" => 1,
+                "message" => "Insurance Offer found ",
+                "data" => $ins_details
+            ],200);
+        }else{
+            return response()->json([
+                "status" => 0,
+                "message" => "Insurance Offer not found"
+            ],404);
+        }
+    }
+
+    public function getByTypeInsurance($type){
+        if(InsuranceType::where("type_of_insurance", $type)->exists()){
+            $ins_details = InsuranceType::where("type_of_insurance", $type)->first();
+           
+            return response()->json([
+                "status" => 1,
+                "message" => "Insurance Offer found ",
+                "data" => $ins_details
+            ],200);
+        }else{
+            return response()->json([
+                "status" => 0,
+                "message" => "Insurance Offer not found"
+            ],404);
+        }
+    }
 }

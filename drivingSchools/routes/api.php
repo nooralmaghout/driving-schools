@@ -78,12 +78,22 @@ Route::get("viewInternationalLicenseDetails", [InternationalOfficeController::cl
 Route::get("getSingleInternationalOffice/{id}", [InternationalOfficeController::class, "getSingleInternationalOffice"]);
 Route::get("listAllavLicenseSchedules", [ScheduleController::class, "listAllAvailableLicenses"]);
 
+
+/////////////////Insurance
+Route::get("getSingleInsurance/{id}", [InsuranceTypeController::class, "getSingleInsurance"]);
+Route::get("listAllavInsuranceSchedules/{id}", [ScheduleController::class, "listAllAvailableInsurancesforuser"]);
+
 Route::get("viewInsuranceOffers", [InsuranceTypeController::class, "listInsurances"]);
+Route::get("viewInsuranceOffersByType/{type}", [InsuranceTypeController::class, "getByTypeInsurance"]);
 
 Route::group(["middleware" => ["auth:sanctum"]], function(){
     Route::get("logoutStudent", [StudentController::class, "logout"]);
     Route::get("listStudentCourses", [StudentCourseController::class, "listStudentCourses"]);
-    Route::get("scheduleLicense/{id}", [ScheduleController::class, "schedule"]);
+    Route::get("scheduleLicense/{id}", [ScheduleController::class, "scheduleLicense"]);
+    Route::get("scheduleInsurance/{id}", [ScheduleController::class, "scheduleInsurance"]);
+    Route::get("viewMyInsuranceOffers", [ScheduleController::class, "viewMyInsuranceOffers"]);
+    Route::get("viewMyLicenses", [ScheduleController::class, "viewMyLicensesOffers"]);
+
 
 
 });

@@ -316,7 +316,7 @@ class ScheduleController extends Controller
                 
             }
 //////////////////user
-    public function schedule($id){
+    public function scheduleLicense($id){
         $user_id = auth()->user()->id;
         $schedule = Schedule::find($id);
         // if($schedule->course_id != Null){
@@ -346,6 +346,79 @@ class ScheduleController extends Controller
         
 
     }
+
+    public function scheduleInsurance($id){
+        $user_id = auth()->user()->id;
+        $schedule = Schedule::find($id);
+        
+        if($schedule->student_id == Null){
+            $schedule->student_id = $user_id;
+            $schedule->save();
+            return response()->json([
+                "status" => 1,
+                "message" => "schedule succeded" 
+            ]);
+        }
+        else{
+            return response()->json([
+                "status" => 1,
+                "message" => "schedule not available" 
+            ]);
+        }
+        
+
+
+    }
+    /////////////////////insurance for user
+    public function listAllAvailableInsurancesforuser($id){
+        //$id = auth()->user()->id;
+        $ins = Schedule::with('insurance_type')->where('insurance_type_id',$id)->where('course_id',Null)
+        ->where('student_id',Null)->get();//
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Listing insurance offers: ",
+            "data" => $ins
+        ],200);
+    }
+
+    public function viewMyInsuranceOffers(){
+        $id = auth()->user()->id;
+        $ins = Schedule::with('insurance_type')->where('insurance_type_id',"!=",Null)
+        ->where('student_id',$id)->get();//
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Listing insurance offers: ",
+            "data" => $ins
+        ],200);
+    }
+
+    public function viewMyLicensesOffers(){
+        $id = auth()->user()->id;
+        
+        $ins = Schedule::where('insurance_type_id',Null)->where('course_id',Null)
+        ->where('international_license_id',Null)
+        ->where('student_id',$id)->get();//
+
+        return response()->json([
+            "status" => 1,
+            "message" => "Listing insurance offers: ",
+            "data" => $ins
+        ],200);
+    }
+// public function listAllNotAvailableInsurancesforuser(){
+//         //$id = auth()->user()->id;
+//         $ins = Schedule::where('insurance_type_id',"!=",Null)->where('course_id',Null)
+//         ->where('international_license_id',Null)
+//         ->where('student_id',"!=",Null)->get();//
+
+//         return response()->json([
+//             "status" => 1,
+//             "message" => "Listing international license offers: ",
+//             "data" => $ins
+//         ],200);
+//     }
 
 
 
